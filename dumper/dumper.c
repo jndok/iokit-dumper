@@ -48,7 +48,7 @@ char *read_line(FILE *fin) {
     return NULL;
 }
 
-uint32_t dump_hierarchy(task_t kport, uint64_t read_addr, const char *path, boolean_t overwrite)
+uint32_t dump_hierarchy(task_t kport, uint64_t read_addr, char *name, const char *path, boolean_t override)
 {
     uint64_t TEXT_SEG_START_ADDR=0, TEXT_SEG_END_ADDR=0, TEXT_SEG_SIZE=0;
     uint64_t CONST_SECT_START_ADDR=0, CONST_SECT_SIZE=0, COMMON_SECT_START_ADDR=0, COMMON_SECT_END_ADDR=0, COMMON_SECT_SIZE=0;
@@ -92,8 +92,10 @@ uint32_t dump_hierarchy(task_t kport, uint64_t read_addr, const char *path, bool
     uint64_t vtable_ptrs[16];
     uint32_t vtable_ptrs_cnt=0;
 
-    if (overwrite) {
-        INIT_OUTPUT_FILE(path);
+    if (override) {
+        INIT_OUTPUT_FILE_OVERRIDE(path, name);
+    } else {
+        INIT_OUTPUT_FILE(path, name);
     }
 
     for (uint32_t i=0; i<CONST_SECT_SIZE; i+=8) {
@@ -228,10 +230,8 @@ uint32_t dump_hierarchy(task_t kport, uint64_t read_addr, const char *path, bool
         }
     }
 
-    if (overwrite) {
-        CLOSE_OUTPUT_FILE(path);
-    }
+    CLOSE_OUTPUT_FILE(path);
 
-    __dbg("(+) Done! Written hierarchy for %#llx @ path: %s", read_addr, path);
+    __dbg("(+) Done! Written hierarchy for %#llx (%s) @ path: %s", read_addr, name, path);
     return 0;
 }

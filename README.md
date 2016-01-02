@@ -22,20 +22,18 @@ Otherwise, just reboot into Recovery Mode and run `csrutil disable` from the Ter
 <br>
 Once SIP is disabled, do:
 ```
-sudo ./iokit-dumper 'kernel'/[kext_bundle_id] [output_file] [overwrite]
+sudo ./iokit-dumper [-o] [-a kernel/[kext_bundle_id]] [-p output_path]
 ```
-Note: the `'kernel'` part means that if you want to dump the kernel hierarchy, you should provide the _kernel_ string (without quotes) as the first argument to the tool.
-<br>
-The `[kext_bundle_id]` is any KEXT bundle ID (obtainable via `kextstat` command on OS X).
-
-The `[output_file]` is obviously the output file path.
-
-The `[overwrite]` parameter is a boolean value (pass `0` or `1`). It specifies whether to override the output file's contents or just append to it.
+Options:
+  - `-o` : Override. This is a boolean value. Include the `-o` argument if you want to override the output file content. If you omit the `-o` argument, the newly generated graph will be appended to the end of the file.
+  - `-a` : Address. String value. Can either be the _kernel_ string or any KEXT bundle ID.
+  - `-p` : Path. String value. The output file path on disk.
 
 So, sample usage:
 ```
-./iokit-dumper com.apple.driver.AppleHDA /Users/$USER/Desktop/test.dot
+sudo ./iokit-dumper -o -a com.apple.driver.AppleHDA -p /Users/$USER/Desktop/test.dot
 ```
+This will write the `com.apple.driver.AppleHDA` KEXT hierarchy to `/Users/$USER/Desktop/test.dot`, overwriting the file's content.
 Then do:
 ```
 dot -Tpdf test.dot -o test.pdf

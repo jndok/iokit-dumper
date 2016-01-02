@@ -11,9 +11,15 @@
 
 #define INITIAL_ALLOC 512
 
-#define INIT_OUTPUT_FILE(file) {    \
+#define INIT_OUTPUT_FILE_OVERRIDE(file, graph_name) {    \
     FILE *f=fopen(file, "w");   \
-    fprintf(f, "Digraph G {\n");    \
+    fprintf(f, "Digraph \"%s\" {\n", graph_name);    \
+    fclose(f);  \
+}
+
+#define INIT_OUTPUT_FILE(file, graph_name) {    \
+    FILE *f=fopen(file, "a");   \
+    fprintf(f, "Digraph \"%s\" {\n", graph_name);    \
     fclose(f);  \
 }
 
@@ -40,10 +46,10 @@ struct hierarchy_entry {
  *
  *  Writes the class hierarchy for kernel/KEXT ar address `addr`,
  *  in DOT format, at file `path`. If `overwrite` is set, it overwrites
- *  the file content. Otherwise, it appends the hierarchy at the end of 
+ *  the file content. Otherwise, it appends the hierarchy at the end of
  *  the file.
  *
  */
-uint32_t dump_hierarchy(task_t kport, uint64_t read_addr, const char *path, boolean_t overwrite);
+uint32_t dump_hierarchy(task_t kport, uint64_t read_addr, char *name, const char *path, boolean_t override);
 
 #endif /* dumper_h */
