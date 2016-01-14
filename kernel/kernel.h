@@ -26,7 +26,7 @@
 #define SLIDE_POINTER(pointer)      (pointer)+kslide
 #define UNSLIDE_POINTER(pointer)    (pointer)-kslide
 
-#define IS_VALID_POINTER(pointer, start_addr, end_addr) ((pointer) > (start_addr) && (pointer) < (end_addr))
+#define IS_VALID_POINTER(pointer, start_addr, end_addr) ((pointer) >= (start_addr) && (pointer) <= (end_addr))
 
 typedef struct MetaClass_Object {
     uint64_t VTable_ptr;
