@@ -142,7 +142,8 @@ uint32_t dump_hierarchy(task_t kport, uint64_t read_addr, char *name, const char
 
                 SLIST_FOREACH(k, &hierarchy_h, entries) {
 
-                    strcpy(search, k->name);
+                    strcpy(search, " ");
+                    strcat(search, k->name);
                     strcat(search, " ");        //this is needed for some rare cases
 
                     fin=fopen(path, "r");
